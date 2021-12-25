@@ -1,0 +1,82 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct BST{
+	int data;
+	struct BST *left;
+	struct BST *right;
+}tree;
+
+tree *create(int data)
+{
+	tree *a;
+	a = (tree *)malloc(sizeof(tree));
+	a->data = data;
+	a->left = NULL;
+	a->right = NULL;
+	return a;
+}
+inOrder(tree *root)
+{
+	if(root != NULL)
+	{
+		inOrder(root->left);
+		printf("Element = %d ",root->data);
+		inOrder(root->right);
+	}
+	printf("\n");
+}
+tree *insert(tree *root,int data)
+{
+	tree *ptr;
+	ptr = (tree *)malloc(sizeof(tree));
+	if(ptr == NULL) // Checking if memory is full
+	{
+		printf("Overflow \n");
+	}
+	else
+	{
+		ptr = create(data);
+		if(root == NULL) // if root is Empty
+		{
+			root = ptr;
+			return root;
+		}
+		if(data < root->data) //Inserting in left subtree
+		{
+			if(root->left == NULL) 
+			{
+				root->left = ptr;
+				return root;
+			}
+			insert(root->left,data);
+		}
+		else				//Inserting in right subtree
+		{
+			if(root->right == NULL)
+			{
+				root->right = ptr;	
+				return root;
+			}
+			insert(root->right,data);
+		}
+	}
+	return root;
+}
+int main()
+{
+	int item;
+	tree *p = NULL;
+	while(1)
+	{
+		inOrder(p);
+		printf("Enter the item you want to insert\n");
+		scanf("%d",&item);
+		p = insert(p,item);	
+		int n;
+		printf("\nDo you want to insert more? Press 1 for yes\n");
+		scanf("%d",&n);
+		if(n != 1)
+		break;
+	}
+}
