@@ -1,0 +1,65 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct binary_tree{
+	int data;
+	struct binary_tree *left;
+	struct binary_tree *right;
+}tree;
+
+tree * create(int data)
+{
+	tree *node;
+	node = (tree *)malloc(sizeof(tree));
+	node->data = data;
+	node->left = NULL;
+	node->right = NULL;
+	return node;
+}
+
+int isBst(tree *root,tree *min,tree *max)
+{
+	// A NULL node is also a bst and a single node is also a bst
+	if(root == NULL)
+	return 1;
+	
+	if(min != NULL && root->data <= min->data)
+	return 0;
+	
+	if(max != NULL && root->data >= max->data)
+	return 0;
+  
+	// here minimum remains same and maximum changes
+	int leftValid = isBst(root->left,min,root);
+  // here maximum changes and minimum remains same
+	int rightValid = isBst(root->right,root,max);
+  
+	return (leftValid && rightValid);
+}
+int main()
+{
+	tree *p = create(60);
+	tree *p1 = create(50);
+	tree *p2 = create(70);
+	tree *p11 = create(40);
+	tree *p12 = create(55);
+	tree *p21 = create(65);
+	tree *p22 = create(80);
+	// linking nodes of a tree
+	
+	p->left = p1;
+	p->right = p2;
+	
+	p1->left = p11;
+	p1->right = p12;
+	
+	p2->left = p21;
+	p2->right = p22;
+	
+	int a = isBst(p,NULL,NULL);
+	if(a == 0)
+	printf("It is not a Binary search tree\n");
+	else
+	printf("It is a Binary search tree\n");
+	return 0;
+}
